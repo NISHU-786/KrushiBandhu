@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -14,16 +16,18 @@ import { useAuth } from "@/components/auth/auth-provider"
 import { useLanguage } from "@/components/providers/language-provider"
 import { LanguageSwitcher } from "@/components/layout/language-switcher"
 import { LoginModal } from "@/components/auth/login-modal"
-import { Bell, LogOut, User, Menu, ChevronDown, Settings } from "lucide-react"
+import { Bell, LogOut, User, Menu, ChevronDown, Settings, DollarSign, Home } from "lucide-react"
 import Image from "next/image"
 
 interface HeaderProps {
   scrollToSection?: (sectionId: string) => void
+  showPricing?: boolean
 }
 
-export function Header({ scrollToSection }: HeaderProps) {
+export function Header({ scrollToSection, showPricing = false }: HeaderProps) {
   const { user, logout } = useAuth()
   const { t } = useLanguage()
+  const router = useRouter()
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
 
@@ -35,13 +39,23 @@ export function Header({ scrollToSection }: HeaderProps) {
     visitor: "👤",
   } as const
 
+  // Navigation links - only show pricing if showPricing is true
   const navLinks = [
-    { id: "about", label: t("About") },
-    { id: "success", label: t("Stories") },
-    { id: "contact", label: t("Contact") },
+    { id: "about", label: t("About"), isExternal: false },
+    { id: "success", label: t("Stories"), isExternal: false },
+    { id: "pricing", label: t("Pricing"), isExternal: true },
+    { id: "contact", label: t("Contact"), isExternal: false },
   ]
 
-  const handleNavClick = (sectionId: string) => {
+  const handleNavClick = (sectionId: string, isExternal: boolean) => {
+    if (isExternal && sectionId === "pricing") {
+      // Navigate to pricing page
+      router.push("/pricing")
+      setShowMobileMenu(false)
+      return
+    }
+
+    // For other sections, use scrollToSection
     if (scrollToSection) {
       scrollToSection(sectionId)
       setShowMobileMenu(false)
@@ -58,7 +72,7 @@ export function Header({ scrollToSection }: HeaderProps) {
       <header className="sticky top-0 z-50 w-full bg-white/60 backdrop-blur-xl border-b border-gray-200/30 shadow-sm">
         <div className="container mx-auto px-6 h-24 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center flex-shrink-0">
+          <Link href="/" className="flex items-center flex-shrink-0">
             <div className="relative w-100 h-100 sm:w-100 sm:h-100">
               <Image 
                 src="/Krushi-bandhu-logo.png" 
@@ -69,7 +83,7 @@ export function Header({ scrollToSection }: HeaderProps) {
                 sizes="(max-width: 640px) 96px, 112px"
               />
             </div>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
@@ -80,9 +94,12 @@ export function Header({ scrollToSection }: HeaderProps) {
                   <Button
                     key={link.id}
                     variant="ghost"
-                    onClick={() => handleNavClick(link.id)}
-                    className="text-gray-700 hover:text-green-600 hover:bg-green-50/80 transition-all duration-200 font-medium px-4 py-2 rounded-lg backdrop-blur-sm"
+                    onClick={() => handleNavClick(link.id, link.isExternal)}
+                    className={`text-gray-700 hover:text-green-600 hover:bg-green-50/80 transition-all duration-200 font-medium px-4 py-2 rounded-lg backdrop-blur-sm ${
+                      link.id === "pricing" ? "flex items-center" : ""
+                    }`}
                   >
+                    {link.id === "pricing" && <DollarSign className="w-4 h-4 mr-2" />}
                     {link.label}
                   </Button>
                 ))}
@@ -180,9 +197,12 @@ export function Header({ scrollToSection }: HeaderProps) {
                     <Button
                       key={link.id}
                       variant="ghost"
-                      onClick={() => handleNavClick(link.id)}
-                      className="w-full justify-start text-gray-700 hover:text-green-600 hover:bg-green-50/80 px-4 py-3 rounded-lg font-medium backdrop-blur-sm"
+                      onClick={() => handleNavClick(link.id, link.isExternal)}
+                      className={`w-full justify-start text-gray-700 hover:text-green-600 hover:bg-green-50/80 px-4 py-3 rounded-lg font-medium backdrop-blur-sm ${
+                        link.id === "pricing" ? "flex items-center" : ""
+                      }`}
                     >
+                      {link.id === "pricing" && <DollarSign className="w-4 h-4 mr-2" />}
                       {link.label}
                     </Button>
                   ))}
