@@ -181,7 +181,7 @@ export function VisitorLanding({ scrollToSection }: VisitorLandingProps) {
       expertise: "React & Next.js",
     },
     {
-      name: "BHOOMICA HULGUR",
+      name: "BHOOMIKA HULGUR",
       role: "Frontend Developer",
       image: "/B.png",
       expertise: "React & TailwindCSS",
