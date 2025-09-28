@@ -134,3 +134,22 @@
 .leaf-shadow {
   box-shadow: 0 4px 6px -1px rgba(52, 120, 52, 0.1), 0 2px 4px -1px rgba(52, 120, 52, 0.06);
 }
+
+/* Mobile layout fixes */
+img,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+.container {
+  @apply w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Prevent text from overflowing on tiny screens */
+body {
+  word-wrap: break-word;
+  overflow-x: hidden;
+}
+

@@ -9,15 +9,15 @@ import "./globals.css"
 
 export const metadata: Metadata = {
   title: "KrushiBandhu - AI-Powered Farming Assistant",
-  description:
-    "Your intelligent farming companion for crop prediction, disease diagnosis, and agricultural guidance in Odisha",
+  description: "Your intelligent farming companion...",
   generator: "v0.app",
-  keywords: ["farming", "agriculture", "AI", "crop prediction", "Odisha", "India"],
+  keywords: [],
   authors: [{ name: "KrushiBandhu Team" }],
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
-  themeColor: "#059669", // Updated to emerald for agricultural theme
+  viewport: "width=device-width, initial-scale=1", // ✅ allow zoom & scaling
+  themeColor: "#059669",
   manifest: "/manifest.json",
 }
+
 
 export default function RootLayout({
   children,

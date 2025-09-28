@@ -11,10 +11,16 @@ function AppContent() {
   const { user } = useAuth()
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Header />
-      <LandingPage />
-      {(!user || user.role === "visitor") && <BottomNavigation />}
+      <main className="flex-1 container">
+        <LandingPage />
+      </main>
+      {(!user || user.role === "visitor") && (
+        <div className="block md:hidden">
+          <BottomNavigation />
+        </div>
+      )}
     </div>
   )
 }
